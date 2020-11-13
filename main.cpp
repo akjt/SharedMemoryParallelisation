@@ -18,7 +18,6 @@ int main( int argc, char *argv[])
    const int tag      = 13221345;
    const int ntasks   = 2;     //  max two for now.
    const int nrepeats = 10;    // We repeat the communication for each message to neglect noise.
-/
    int whoami, size, ierr, root;
    std::vector<real> MBbytesArray;
    std::ofstream myfileshm;
