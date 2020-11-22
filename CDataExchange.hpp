@@ -14,6 +14,7 @@ class CDataExchange{
    const std::unique_ptr<const CTaskDivider>& TaskInfo; // Don't allow this ptr to be changed - and its content.
    std::vector<int> rBufSize, sBufSize;
    const int whoami, npartners;
+   const static int tag_alloc = 101010;
 
    T * __restrict__   ptrSbuf  = nullptr;   //  buffer to be sent to partners.
    T **  __restrict__ ptrRbuf  = nullptr;   //  buffer to be read by partners.
@@ -49,7 +50,8 @@ class CDataExchange{
 
 
 // TODO: create a communicator among whoami and partners and do a mpi_ibcast instead... 
-      MPI_Request request[npartners];
+      MPI_Request request_s[npartners];
+      MPI_Request request_r[npartners];
 
       for( int iPartner = 0; iPartner < npartners; iPartner++)
       {
@@ -58,9 +60,9 @@ class CDataExchange{
                            , 1
                            , MPI_INT
                            , rank_
-                           , 101010
+                           , tag_alloc
                            , MPI_COMM_WORLD
-                           , &request[iPartner] ); 
+                           , &request_s[iPartner] ); 
       }
 
 //   For now just sending same data to all my partners. 
@@ -74,12 +76,13 @@ class CDataExchange{
                            , 1
                            , MPI_INT
                            , rank_
-                           , 101010
+                           , tag_alloc
                            , MPI_COMM_WORLD
-                           , &request[iPartner] ); 
+                           , &request_r[iPartner] ); 
       }
 
-      CMPIWrapper::Waitall(npartners, request, MPI_STATUSES_IGNORE);
+      CMPIWrapper::Waitall(npartners, request_r, MPI_STATUSES_IGNORE);
+      CMPIWrapper::Waitall(npartners, request_s, MPI_STATUSES_IGNORE);
 
       ptrRbuf = (T ** )malloc(sizeof(T*)*npartners);
 

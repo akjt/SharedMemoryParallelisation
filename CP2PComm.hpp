@@ -9,8 +9,7 @@ template<typename T>
 class CP2PComm{
 
    private:
-   const static int tag_alloc = 1010101;
-   const static int tag_data  = 2020202;
+   const static int tag_data  = 202020;
 
    MPI_Datatype MPIDataType;
    MPI_Request* request;
