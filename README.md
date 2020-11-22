@@ -13,7 +13,5 @@ Program will write two files, namely the average communication time.
    1) `bandwidth_p2p.out`: Bandwidth Analysis for point-to-point communication
    2) `bandwidth_shm.out`: Bandwidth Analysis for Shared memory  communication
    
-Files will have three columns:
 
    
-   Average time among colour 1 ranks.                     Average time among colour 2 ranks.                              Message size.  
